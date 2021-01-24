@@ -1,17 +1,12 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'node:14-alpine' }
+    }
     stages {
-          stage('log version info') {
-               steps {
-                    sh 'mvn --version'
-                    sh 'mvn clean nstall'
-                }
-          }
-     }
-
-     post {
-         always {
-             cleanWs()
-         }
-     }
- }
+        stage('Test') {
+            steps {
+                sh 'node --version'
+            }
+        }
+    }
+}
