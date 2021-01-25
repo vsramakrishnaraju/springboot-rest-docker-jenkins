@@ -1,23 +1,11 @@
 node {
+    checkout scm
 
-  checkout scm
-  
-  stage('Build') { 
-         steps {
-                sh 'mvn clean compile install' 
-            }
-        }
-  
-  def dockerImage
-  
+    docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
 
+        def customImage = docker.build("vsramakrishnaraju/dockerapi")
 
-  stage('Build image') {
-    dockerImage = docker.build("vsramakrishnaraju/latest:version1")
-  }
-
-  stage('Push image') {
-    dockerImage.push()
-  }   
-
+        /* Push the container to the custom Registry */
+        customImage.push()
+    }
 }
